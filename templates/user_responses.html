@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>User Responses - House Rental Portal</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f2f2f2;
+    color:#333;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* HEADER */
+header{
+    background:#ededed;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+header i{font-size:46px;color:#777;}
+header h1{font-size:26px;color:#444;}
+header p{font-size:18px;color:#444;}
+
+/* WRAPPER */
+.wrapper{
+    flex:1;
+    display:flex;
+}
+
+/* SIDE NAV */
+.sidenav{
+    width:240px;
+    background:#e0e0e0;
+    padding-top:20px;
+    box-shadow:2px 0 10px rgba(0,0,0,0.1);
+}
+.sidenav h3{
+    text-align:center;
+    margin-bottom:25px;
+    color:#555;
+}
+.sidenav a{
+    display:block;
+    padding:15px 25px;
+    text-decoration:none;
+    color:#444;
+    font-size:16px;
+}
+.sidenav a i{
+    margin-right:10px;
+    color:#666;
+}
+.sidenav a:hover{
+    background:#d0d0d0;
+}
+
+/* CONTENT */
+.content{
+    flex:1;
+    padding:30px;
+}
+
+/* TABLES */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:40px;
+    background:#fff;
+    box-shadow:0 6px 15px rgba(0,0,0,0.08);
+}
+th,td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:left;
+}
+th{
+    background:#444;
+    color:#fff;
+}
+h2{
+    margin-bottom:15px;
+}
+
+/* BUTTONS */
+button{
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    background:#d0d0d0;
+}
+button:hover{background:#c0c0c0;}
+
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+}
+.modal-content{
+    background:#fff;
+    padding:20px;
+    width:400px;
+    border-radius:10px;
+}
+
+/* FORM */
+input,select,textarea{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border-radius:6px;
+    border:1px solid #bbb;
+}
+
+/* FOOTER */
+footer{
+    background:#dcdcdc;
+    text-align:center;
+    padding:15px;
+    font-size:14px;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <i class="fa-solid fa-user"></i>
+    <h1>User Dashboard</h1>
+    <p>Browse Houses, Track Payments & Manage Your Rentals</p>
+</header>
+
+<div class="wrapper">
+
+    <!-- SIDE NAV -->
+    <div class="sidenav">
+        <h3>User Menu</h3>
+
+        <a href="/user/dashboard">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
+
+        <a href="/user/view">
+            <i class="fa-solid fa-building"></i> View Houses
+        </a>
+
+        <a href="/user/responses">
+            <i class="fa-solid fa-comments"></i> My Responses
+        </a>
+
+        <a href="/user/payments">
+            <i class="fa-solid fa-credit-card"></i> Payments
+        </a>
+
+        <a href="/user/logout">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <h2>Contact Responses</h2>
+        <table>
+            <tr>
+                <th>Flat</th>
+                <th>Area</th>
+                <th>Location</th>
+                <th>Your Info</th>
+                <th>Your Queries</th>
+                <th>Owner Reply (Info)</th>
+                <th>Owner Reply (Queries)</th>
+                <th>Date</th>
+            </tr>
+            {% for c in contact_responses %}
+            <tr>
+                <td>{{ c[0] }}</td>
+                <td>{{ c[1] }}</td>
+                <td>{{ c[2] }}</td>
+                <td>{{ c[3] }}</td>
+                <td>{{ c[4] }}</td>
+                <td>{{ c[5] or '-' }}</td>
+                <td>{{ c[6] or '-' }}</td>
+                <td>{{ c[7] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Booking Responses</h2>
+        <table>
+            <tr>
+                <th>Flat</th>
+                <th>Area</th>
+                <th>Location</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Status</th>
+                <th>Owner Notes</th>
+                <th>Booking Date</th>
+                <th>Advance</th>
+            </tr>
+            {% for b in booking_responses %}
+            <tr>
+                <td>{{ b[1] }}</td>
+                <td>{{ b[2] }}</td>
+                <td>{{ b[3] }}</td>
+                <td>{{ b[4] }}</td>
+                <td>{{ b[5] or '-' }}</td>
+                <td>{{ b[6] }}</td>
+                <td>{{ b[7] or '-' }}</td>
+                <td>{{ b[8] }}</td>
+                <td>
+                    <button onclick="openAdvanceModal({{ b[0] }})">Pay Advance</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</div>
+
+<!-- ADVANCE MODAL -->
+<div class="modal" id="advanceModal">
+    <div class="modal-content">
+        <h3>Advance Payment</h3><br>
+        <form method="post" action="/user/advance">
+            <input type="hidden" name="house_id" id="house_id">
+
+            <label>Payment Type</label>
+            <select name="payment_type" id="payment_type" onchange="showFields()">
+                <option value="">Select</option>
+                <option value="gpay">GPay</option>
+                <option value="rupay">Rupay</option>
+                <option value="bank transfer">Bank Transfer</option>
+                <option value="paytm">Paytm</option>
+                <option value="navi">Navi</option>
+                <option value="others">Others</option>
+            </select><br><br>
+
+            <div id="referenceDiv" style="display:none">
+                <label>Reference ID</label>
+                <input type="text" name="reference_id">
+            </div>
+
+            <div id="accountDiv" style="display:none">
+                <label>Account Number</label>
+                <input type="text" name="account_number">
+            </div>
+
+            <div id="descriptionDiv" style="display:none">
+                <label>Description</label>
+                <textarea name="description"></textarea>
+            </div><br>
+
+            <button type="submit">Submit</button>
+            <button type="button" onclick="closeAdvanceModal()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <i class="fa-solid fa-building"></i>
+    © 2026 House & Flat Rental Portal
+</footer>
+
+<script>
+function openAdvanceModal(id){
+    house_id.value=id;
+    advanceModal.style.display='flex';
+}
+function closeAdvanceModal(){
+    advanceModal.style.display='none';
+}
+function showFields(){
+    let t=payment_type.value;
+    referenceDiv.style.display=['gpay','rupay','paytm','navi'].includes(t)?'block':'none';
+    accountDiv.style.display=t==='bank transfer'?'block':'none';
+    descriptionDiv.style.display=t==='others'?'block':'none';
+}
+</script>
+
+</body>
+</html>

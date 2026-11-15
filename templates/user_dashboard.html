@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>User Dashboard - House Rental Portal</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f2f2f2;
+    color:#333;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+header{
+    background:#ededed;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+header i{
+    font-size:46px;
+    color:#777;
+}
+
+header h1{
+    font-size:26px;
+    color:#444;
+}
+
+header p{
+    font-size:18px;
+    color:#444;
+}
+
+/* WRAPPER */
+.wrapper{
+    flex:1;
+    display:flex;
+}
+
+/* SIDE NAV */
+.sidenav{
+    width:240px;
+    background:#e0e0e0;
+    padding-top:20px;
+    box-shadow:2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidenav h3{
+    text-align:center;
+    margin-bottom:25px;
+    color:#555;
+}
+
+.sidenav a{
+    display:block;
+    padding:15px 25px;
+    text-decoration:none;
+    color:#444;
+    font-size:16px;
+}
+
+.sidenav a i{
+    margin-right:10px;
+    color:#666;
+}
+
+.sidenav a:hover{
+    background:#d0d0d0;
+}
+
+/* CONTENT */
+.content{
+    flex:1;
+    padding:30px;
+}
+
+/* CARD GRID */
+.card-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
+}
+
+.card{
+    background:#e9e9e9;
+    border-radius:12px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    animation: float 4s ease-in-out infinite;
+}
+
+.card i{
+    font-size:45px;
+    color:#777;
+    margin-bottom:15px;
+}
+
+.card h3{
+    margin-bottom:10px;
+    color:#444;
+}
+
+.card p{
+    color:#555;
+    line-height:1.6;
+    font-size:15px;
+}
+
+.card:nth-child(2){ animation-delay: 0.5s; }
+.card:nth-child(3){ animation-delay: 1s; }
+.card:nth-child(4){ animation-delay: 1.5s; }
+
+@keyframes float{
+    0%{ transform: translateY(0); }
+    50%{ transform: translateY(-12px); }
+    100%{ transform: translateY(0); }
+}
+
+/* FOOTER */
+footer{
+    background:#dcdcdc;
+    text-align:center;
+    padding:15px;
+    font-size:14px;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <i class="fa-solid fa-user"></i>
+    <h1>User Dashboard</h1>
+    <p>Browse Houses, Track Payments & Manage Your Rentals</p>
+</header>
+
+<div class="wrapper">
+
+    <!-- SIDE NAV -->
+    <div class="sidenav">
+        <h3>User Menu</h3>
+        <a href="/user/dashboard">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
+
+        <a href="/user/view">
+            <i class="fa-solid fa-house"></i> View Houses
+        </a>
+
+        <a href="/user/responses">
+            <i class="fa-solid fa-comments"></i> My Responses
+        </a>
+
+        <a href="/user/payments">
+            <i class="fa-solid fa-credit-card"></i> Payments
+        </a>
+
+        <a href="/user/logout">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content">
+        <div class="card-grid">
+
+            <div class="card">
+                <i class="fa-solid fa-house"></i>
+                <h3>Browse Houses</h3>
+                <p>Explore available houses and flats for rent with full details.</p>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-comments"></i>
+                <h3>My Responses</h3>
+                <p>Track your enquiries and owner responses easily.</p>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-credit-card"></i>
+                <h3>Payments</h3>
+                <p>View rent and advance payment history securely.</p>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-user-shield"></i>
+                <h3>Secure Access</h3>
+                <p>Your data and transactions are safe and protected.</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <i class="fa-solid fa-building"></i>
+    © 2026 House & Flat Rental Portal
+</footer>
+
+</body>
+</html>

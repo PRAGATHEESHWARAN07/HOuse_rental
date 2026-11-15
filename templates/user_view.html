@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>View Houses - User Dashboard</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f2f2f2;
+    color:#333;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* HEADER */
+header{
+    background:#ededed;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+header i{
+    font-size:46px;
+    color:#777;
+}
+
+header h1{
+    font-size:26px;
+    color:#444;
+}
+
+header p{
+    font-size:18px;
+    color:#444;
+}
+
+/* WRAPPER */
+.wrapper{
+    flex:1;
+    display:flex;
+}
+
+/* SIDE NAV */
+.sidenav{
+    width:240px;
+    background:#e0e0e0;
+    padding-top:20px;
+    box-shadow:2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidenav h3{
+    text-align:center;
+    margin-bottom:25px;
+    color:#555;
+}
+
+.sidenav a{
+    display:block;
+    padding:15px 25px;
+    text-decoration:none;
+    color:#444;
+    font-size:16px;
+}
+
+.sidenav a i{
+    margin-right:10px;
+    color:#666;
+}
+
+.sidenav a:hover{
+    background:#d0d0d0;
+}
+
+/* CONTENT */
+.content{
+    flex:1;
+    padding:30px;
+}
+
+/* HOUSE GRID */
+.house-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:25px;
+}
+
+.house-card{
+    background:#e9e9e9;
+    border-radius:12px;
+    padding:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    animation: float 4s ease-in-out infinite;
+}
+
+.house-card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.house-info{
+    font-size:14px;
+    line-height:1.7;
+    margin-top:10px;
+    color:#444;
+}
+
+.house-actions{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+}
+
+.house-actions button{
+    flex:1;
+    padding:8px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    background:#d0d0d0;
+    color:#333;
+    font-size:14px;
+}
+
+.house-actions button:hover{
+    background:#c0c0c0;
+}
+
+/* FLOAT ANIMATION */
+@keyframes float{
+    0%{ transform: translateY(0); }
+    50%{ transform: translateY(-10px); }
+    100%{ transform: translateY(0); }
+}
+
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    z-index:1000;
+}
+
+.modal-content{
+    background:#f2f2f2;
+    margin:5% auto;
+    padding:25px;
+    width:70%;
+    border-radius:12px;
+}
+
+.close{
+    float:right;
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* FOOTER */
+footer{
+    background:#dcdcdc;
+    text-align:center;
+    padding:15px;
+    font-size:14px;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <i class="fa-solid fa-house"></i>
+    <h1>Available Houses</h1>
+    <p>Browse and book your perfect rental home</p>
+</header>
+
+<div class="wrapper">
+
+    <!-- SIDENAV -->
+    <div class="sidenav">
+        <h3>User Menu</h3>
+        <a href="/user/dashboard">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
+
+        <a href="/user/view"><i class="fa-solid fa-house"></i> View Houses</a>
+        <a href="/user/responses"><i class="fa-solid fa-comments"></i> My Responses</a>
+        <a href="/user/payments"><i class="fa-solid fa-credit-card"></i> Payments</a>
+        <a href="/user/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+    <!-- SEARCH FORM -->
+    <div style="margin-bottom:25px; display:flex; gap:10px; align-items:center;">
+        <form method="GET" action="/user/view" style="display:flex; gap:10px; width:100%;">
+            <input type="text" name="search_area" placeholder="Search by Area" value="{{ request.args.get('search_area','') }}" style="padding:8px; flex:1;">
+            <input type="text" name="search_flat" placeholder="Search by Flat Name" value="{{ request.args.get('search_flat','') }}" style="padding:8px; flex:1;">
+            <input type="text" name="search_location" placeholder="Search by Location" value="{{ request.args.get('search_location','') }}" style="padding:8px; flex:1;">
+            <button type="submit" style="padding:8px;">Search</button>
+        </form>
+    </div>
+        <div class="house-container">
+
+        {% for h in houses %}
+        <div class="house-card">
+
+{% if h[9] %}
+    <img src="{{ url_for('static', filename='uploads/' + h[9]) }}" alt="House Image">
+{% endif %}
+
+
+<div class="house-info">
+    <b>Flat:</b> {{ h[1] }}<br>
+    <b>Flat Name:</b> {{ h[2] }}<br>
+    <b>Area:</b> {{ h[3] }}<br>
+    <b>Location:</b> {{ h[4] }}<br>
+    <b>Pincode:</b> {{ h[5] }}<br>
+    <b>Rent:</b> ₹{{ h[6] }}<br>
+    <b>Rooms:</b> {{ h[7] }} |
+    <b>Bedrooms:</b> {{ h[8] }}<br><br>
+
+    <b>Owner:</b> {{ h[10] }}<br>
+    <b>Contact:</b> {{ h[11] }}
+</div>
+
+
+            <div class="house-actions">
+                <button onclick="openView({{ h[0] }})">View</button>
+                <button onclick="openContact({{ h[0] }})">Contact</button>
+                <button onclick="openBooking({{ h[0] }})">Book</button>
+            </div>
+
+        </div>
+        {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="modal" id="viewModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeView()">✖</span>
+        <div id="viewContent"></div>
+    </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal" id="contactModal">
+    <div class="modal-content" style="width:40%">
+        <span class="close" onclick="closeContact()">✖</span>
+
+        <form method="POST" action="/user/contact">
+            <input type="hidden" name="house_id" id="contact_house_id">
+
+            <label>Info</label><br>
+            <input type="text" name="info" required><br><br>
+
+            <label>Queries</label><br>
+            <textarea name="queries" required></textarea><br><br>
+
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="modal" id="bookingModal">
+    <div class="modal-content" style="width:40%">
+        <span class="close" onclick="closeBooking()">✖</span>
+
+        <form method="POST" action="/user/book">
+            <input type="hidden" name="house_id" id="booking_house_id">
+
+            <label>From Date</label><br>
+            <input type="date" name="from_date" required><br><br>
+
+            <label>To Date (Optional)</label><br>
+            <input type="date" name="to_date"><br><br>
+
+            <button type="submit">Confirm Booking</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <i class="fa-solid fa-building"></i>
+    © 2026 House & Flat Rental Portal
+</footer>
+
+<script>
+function openView(id){
+    fetch('/user/house/' + id)
+    .then(res => res.text())
+    .then(html => {
+        document.getElementById('viewContent').innerHTML = html;
+        document.getElementById('viewModal').style.display = 'block';
+    });
+}
+function closeView(){ document.getElementById('viewModal').style.display='none'; }
+function openContact(id){
+    document.getElementById('contact_house_id').value=id;
+    document.getElementById('contactModal').style.display='block';
+}
+function closeContact(){ document.getElementById('contactModal').style.display='none'; }
+function openBooking(id){
+    document.getElementById('booking_house_id').value=id;
+    document.getElementById('bookingModal').style.display='block';
+}
+function closeBooking(){ document.getElementById('bookingModal').style.display='none'; }
+</script>
+
+</body>
+</html>

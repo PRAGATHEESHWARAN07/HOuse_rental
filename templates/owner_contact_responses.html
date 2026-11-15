@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Owner Dashboard - Contact Responses</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f2f2f2;
+    color:#333;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* HEADER */
+header{
+    background:#ededed;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+header i{
+    font-size:46px;
+    color:#777;
+}
+
+header h1{
+    font-size:26px;
+}
+
+header p{
+    font-size:18px;
+}
+
+/* WRAPPER */
+.wrapper{
+    flex:1;
+    display:flex;
+}
+
+/* SIDE NAV */
+.sidenav{
+    width:240px;
+    background:#e0e0e0;
+    padding-top:20px;
+    box-shadow:2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidenav h3{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.sidenav a{
+    display:block;
+    padding:15px 25px;
+    text-decoration:none;
+    color:#444;
+}
+
+.sidenav a i{
+    margin-right:10px;
+}
+
+.sidenav a:hover{
+    background:#d0d0d0;
+}
+
+/* CONTENT */
+.content{
+    flex:1;
+    padding:30px;
+}
+
+/* TABLE STYLING (MATCHING THEME) */
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#e8e8e8;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+
+th{
+    background:#dcdcdc;
+    padding:12px;
+    text-align:left;
+    font-size:15px;
+}
+
+td{
+    padding:12px;
+    vertical-align:top;
+    font-size:14px;
+}
+
+tr:nth-child(even){
+    background:#f1f1f1;
+}
+
+textarea{
+    width:100%;
+    padding:8px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    resize:vertical;
+}
+
+button{
+    background:#dcdcdc;
+    border:none;
+    padding:8px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#c0c0c0;
+}
+
+/* FOOTER */
+footer{
+    background:#dcdcdc;
+    text-align:center;
+    padding:15px;
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <i class="fa-solid fa-building"></i>
+    <h1>Owner Dashboard</h1>
+    <p>Manage Your Houses and Bookings Efficiently</p>
+</header>
+
+<div class="wrapper">
+
+    <!-- SIDE NAV -->
+    <div class="sidenav">
+        <h3><i class="fa-solid fa-user-tie"></i> Owner Panel</h3>
+        <a href="/owner/dashboard">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
+        <a href="/owner/add-house"><i class="fa-solid fa-plus"></i> Add House</a>
+        <a href="/owner/view-houses"><i class="fa-solid fa-eye"></i> View Houses</a>
+        <a href="/owner/contact-responses"><i class="fa-solid fa-envelope"></i> Contact Responses</a>
+        <a href="/owner/booking-responses"><i class="fa-solid fa-calendar-check"></i> Booking Responses</a>
+        <a href="/owner/payments"><i class="fa-solid fa-credit-card"></i> Payments</a>
+        <a href="/owner/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <h2 style="margin-bottom:20px;">Contact Responses</h2>
+
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Mobile</th>
+                <th>House</th>
+                <th>User Info</th>
+                <th>User Queries</th>
+                <th>Your Reply</th>
+                <th>Date</th>
+            </tr>
+
+            {% for c in contacts %}
+            <tr>
+                <form method="post" action="/owner/reply-contact">
+                    <td>{{ c[1] }}</td>
+                    <td>{{ c[2] }}</td>
+                    <td>{{ c[3] }}</td>
+
+                    <td>
+                        {{ c[4] }}<br>
+                        <textarea name="info_response">{{ c[7] }}</textarea>
+                    </td>
+
+                    <td>
+                        {{ c[5] }}<br>
+                        <textarea name="queries_response">{{ c[8] }}</textarea>
+                    </td>
+
+                    <td>
+                        <input type="hidden" name="contact_id" value="{{ c[0] }}">
+                        <button type="submit">Send Reply</button>
+                    </td>
+
+                    <td>{{ c[6] }}</td>
+                </form>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</div>
+
+<footer>
+    <i class="fa-solid fa-building"></i>
+    © 2026 House & Flat Rental Portal
+</footer>
+
+</body>
+</html>

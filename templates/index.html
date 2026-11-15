@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>House & Flat Rental Portal</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f2f2f2;
+    color:#333;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+header{
+    background:#ededed;
+    padding:25px;
+    display:flex;
+    flex-direction:column;   /* stack title and quote vertically */
+    align-items:flex-start;  /* align left, same as icons */
+    gap:10px;                /* spacing between icon, title, quote */
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+header i {
+    font-size: 46px;
+    color: #777;
+}
+
+
+header h1{
+    font-size:26px;
+    color:#444;
+}
+
+header p{
+    font-size:18px;
+    color:#444;
+}
+
+/* MIDDLE WRAPPER */
+.wrapper{
+    flex:1;
+    display:flex;
+}
+
+/* SIDE NAV */
+.sidenav{
+    width:240px;
+    background:#e0e0e0;
+    padding-top:20px;
+    box-shadow:2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidenav h3{
+    text-align:center;
+    margin-bottom:25px;
+    color:#555;
+}
+
+.sidenav a{
+    display:block;
+    padding:15px 25px;
+    text-decoration:none;
+    color:#444;
+    font-size:16px;
+}
+
+.sidenav a i{
+    margin-right:10px;
+    color:#666;
+}
+
+.sidenav a:hover{
+    background:#d0d0d0;
+}
+
+/* CONTENT */
+.content{
+    flex:1;
+    padding:30px;
+}
+
+/* CARD GRID */
+.card-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
+}
+
+.card{
+    background:#e9e9e9;
+    border-radius:12px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card i{
+    font-size:45px;
+    color:#777;
+    margin-bottom:15px;
+}
+
+.card h3{
+    margin-bottom:10px;
+    color:#444;
+}
+
+.card p{
+    color:#555;
+    line-height:1.6;
+    font-size:15px;
+}
+
+/* ABOUT */
+.about{
+    background:#e0e0e0;
+    padding:25px;
+    border-radius:10px;
+    margin-top:40px;
+}
+/* FLOATING CARD ANIMATION (ADDED ONLY) */
+.card{
+    animation: float 4s ease-in-out infinite;
+}
+
+.card:nth-child(2){ animation-delay: 0.5s; }
+.card:nth-child(3){ animation-delay: 1s; }
+.card:nth-child(4){ animation-delay: 1.5s; }
+
+@keyframes float{
+    0%{ transform: translateY(0); }
+    50%{ transform: translateY(-12px); }
+    100%{ transform: translateY(0); }
+}
+
+/* FOOTER */
+footer{
+    background:#dcdcdc;
+    text-align:center;
+    padding:15px;
+    font-size:14px;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <i class="fa-solid fa-building"></i>
+    <h1>House & Flat Rental Portal</h1>
+    <p>Find Your Perfect Home, Rent Smarter, Live Better</p>
+
+</header>
+
+<div class="wrapper">
+
+    <!-- SIDE NAV BELOW HEADER -->
+    <div class="sidenav">
+        <h3><i class="fa-solid fa-house"></i> Rental Portal</h3>
+        <a href="/"><i class="fa-solid fa-home"></i> Home</a>
+        <a href="/owner/login"><i class="fa-solid fa-user-tie"></i> Owner Login</a>
+        <a href="/user/login"><i class="fa-solid fa-user"></i> User Login</a>
+        <a href="#about"><i class="fa-solid fa-circle-info"></i> About</a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <div class="card-grid">
+            <div class="card">
+                <i class="fa-solid fa-house-circle-check"></i>
+                <h3>Rental Houses</h3>
+                <p>    Find verified rental houses and flats in your preferred
+                    area with affordable pricing and flexible options..</p>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-globe"></i>
+                <h3>Online Platform</h3>
+                <p>     A complete online platform that connects tenants
+                    and house owners with ease and transparency..</p>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-bolt"></i>
+                <h3>Easy Access</h3>
+                <p>    Simple login, quick booking, and instant access
+                    to rental details anytime, anywhere.</p>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-credit-card"></i>
+                <h3>Online Payments</h3>
+                <p>   Secure and reliable online payments for advance
+                    and monthly rent with full transaction records..</p>
+            </div>
+        </div>
+
+        <div class="about" id="about">
+            <h2>About Us</h2>
+                <p>
+                This portal is designed to simplify the rental process for both
+                house owners and users. Owners can list their houses or flats,
+                manage bookings, and receive payments, while users can explore
+                rental options, book houses, and pay rent online.
+            </p>
+            <p>
+                Our goal is to provide a transparent, user-friendly, and efficient
+                rental experience using modern web technologies.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <i class="fa-solid fa-building"></i>
+    © 2026 House & Flat Rental Portal
+</footer>
+
+</body>
+</html>

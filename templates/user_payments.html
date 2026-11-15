@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rent Payment - User Dashboard</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f2f2f2;
+    color:#333;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* HEADER */
+header{
+    background:#ededed;
+    padding:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+header i{font-size:46px;color:#777;}
+header h1{font-size:26px;color:#444;}
+header p{font-size:18px;color:#444;}
+
+/* WRAPPER */
+.wrapper{
+    flex:1;
+    display:flex;
+}
+
+/* SIDE NAV */
+.sidenav{
+    width:240px;
+    background:#e0e0e0;
+    padding-top:20px;
+    box-shadow:2px 0 10px rgba(0,0,0,0.1);
+}
+.sidenav h3{
+    text-align:center;
+    margin-bottom:25px;
+    color:#555;
+}
+.sidenav a{
+    display:block;
+    padding:15px 25px;
+    text-decoration:none;
+    color:#444;
+    font-size:16px;
+}
+.sidenav a i{
+    margin-right:10px;
+    color:#666;
+}
+.sidenav a:hover{
+    background:#d0d0d0;
+}
+
+/* CONTENT */
+.content{
+    flex:1;
+    padding:30px;
+    overflow-x:auto;
+}
+
+/* TABLES */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:40px;
+    background:#fff;
+    box-shadow:0 6px 15px rgba(0,0,0,0.08);
+}
+th,td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:left;
+}
+th{
+    background:#444;
+    color:#fff;
+}
+h2{
+    margin-bottom:15px;
+}
+
+/* FORMS */
+input,select,textarea{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border-radius:6px;
+    border:1px solid #bbb;
+    margin-bottom:10px;
+}
+button{
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    background:#d0d0d0;
+}
+button:hover{background:#c0c0c0;}
+
+/* MODAL (if needed) */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+}
+.modal-content{
+    background:#fff;
+    padding:20px;
+    width:400px;
+    border-radius:10px;
+}
+
+/* FOOTER */
+footer{
+    background:#dcdcdc;
+    text-align:center;
+    padding:15px;
+    font-size:14px;
+    color:#555;
+}
+</style>
+
+<script>
+function toggleFields(val){
+    document.getElementById('ref').style.display =
+        (val=='gpay'||val=='rupay'||val=='navi'||val=='paytm') ? 'block' : 'none';
+
+    document.getElementById('bank').style.display =
+        (val=='bank') ? 'block' : 'none';
+
+    document.getElementById('desc').style.display =
+        (val=='other') ? 'block' : 'none';
+}
+</script>
+</head>
+
+<body>
+
+<header>
+    <i class="fa-solid fa-user"></i>
+    <h1>User Dashboard</h1>
+    <p>Browse Houses, Track Payments & Manage Your Rentals</p>
+</header>
+
+<div class="wrapper">
+
+    <!-- SIDE NAV -->
+    <div class="sidenav">
+        <h3>User Menu</h3>
+
+        <a href="/user/dashboard">
+            <i class="fa-solid fa-house"></i> Home
+        </a>
+
+        <a href="/user/view">
+            <i class="fa-solid fa-building"></i> View Houses
+        </a>
+
+        <a href="/user/responses">
+            <i class="fa-solid fa-comments"></i> My Responses
+        </a>
+
+        <a href="/user/payments">
+            <i class="fa-solid fa-credit-card"></i> Payments
+        </a>
+
+        <a href="/user/logout">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <h2>Rent Payment</h2>
+
+        {% for h in houses %}
+        <form method="POST" action="/user/pay-rent" enctype="multipart/form-data">
+            <input type="hidden" name="house_id" value="{{h[0]}}">
+            <p><b>House:</b> {{h[1]}} - {{h[2]}} ({{h[3]}})</p>
+
+            <label>Amount</label>
+            <input type="number" name="amount" value="{{h[4]}}" readonly>
+
+            <label>Payment Type</label>
+            <select name="payment_type" onchange="toggleFields(this.value)" required>
+                <option value="">Select</option>
+                <option value="gpay">GPay</option>
+                <option value="rupay">RuPay</option>
+                <option value="navi">Navi</option>
+                <option value="paytm">Paytm</option>
+                <option value="bank">Bank Transaction</option>
+                <option value="other">Other</option>
+            </select>
+
+            <div id="ref" style="display:none;">
+                <label>Transaction / Reference ID</label>
+                <input type="text" name="reference_id">
+            </div>
+
+            <div id="bank" style="display:none;">
+                <label>Account Number</label>
+                <input type="text" name="account_number">
+            </div>
+
+            <div id="desc" style="display:none;">
+                <label>Description</label>
+                <textarea name="description"></textarea>
+            </div>
+
+            <label>Upload Image (optional)</label>
+            <input type="file" name="image">
+
+            <button type="submit">Pay Rent</button>
+        </form>
+        <hr>
+        {% endfor %}
+
+        <h2>My Rent Payments</h2>
+
+        {% if payments %}
+        <table>
+            <tr>
+                <th>House</th>
+                <th>Amount</th>
+                <th>Payment Type</th>
+                <th>Reference</th>
+                <th>Account</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Date</th>
+            </tr>
+            {% for p in payments %}
+            <tr>
+                <td>{{p[1]}} - {{p[2]}} ({{p[3]}})</td>
+                <td>₹ {{p[4]}}</td>
+                <td>{{p[5]}}</td>
+                <td>{{p[6] or '-'}}</td>
+                <td>{{p[7] or '-'}}</td>
+                <td>{{p[8] or '-'}}</td>
+                <td>
+                    {% if p[9] %}
+                        <img src="{{ url_for('static', filename='uploads/' + p[9]) }}" width="80">
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{p[10]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No rent payments made yet.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+<footer>
+    <i class="fa-solid fa-building"></i>
+    © 2026 House & Flat Rental Portal
+</footer>
+
+</body>
+</html>
